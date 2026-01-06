@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using System.Collections;
+using System.Collections.Generic;
 public class PlayerMotor : MonoBehaviour
 {
 
@@ -11,10 +12,15 @@ public class PlayerMotor : MonoBehaviour
     public float gravity = -9.8f;
     public float jumpHeight = 1.5f;
     PlayerInput playerInput;
-    PlayerInput.MainActions input;
+    PlayerInput.OnFootActions input;
     Animator animator;
     AudioSource AudioSource;
 
+
+
+    [Header("Camera")]
+    public Camera cam;
+    public float sensitivity;
 
 
     void AssignInputs()
@@ -29,10 +35,10 @@ public class PlayerMotor : MonoBehaviour
         AudioSource = GetComponent<AudioSource>();
 
         playerInput = new PlayerInput();
-        input = playerInput.Main;
+        input = playerInput.OnFoot;
         AssignInputs();
 
-        Cursor.lockstate = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         
     }
@@ -73,6 +79,38 @@ public class PlayerMotor : MonoBehaviour
         }
     }
 
+    // ---------- //
+    // ANIMATIONS //
+    // ---------- //
+
+    public const string IDLE = "Idle";
+    public const string WALK = "Walk";
+    public const string ATTACK1 = "Attack 1";
+    public const string ATTACK2 = "Attack 2";
+
+    string currentAnimationState;
+
+    public void ChangeAnimationState(string newState) 
+    {
+        // STOP THE SAME ANIMATION FROM INTERRUPTING WITH ITSELF //
+        if (currentAnimationState == newState) return;
+
+        // PLAY THE ANIMATION //
+        currentAnimationState = newState;
+        animator.CrossFadeInFixedTime(currentAnimationState, 0.2f);
+    }
+
+    void SetAnimations()
+    {
+        // If player is not attacking
+        if(!attacking)
+        {
+            if(playerVelocity.x == 0 &&playerVelocity.z == 0)
+            { ChangeAnimationState(IDLE); }
+            else
+            { ChangeAnimationState(WALK); }
+        }
+    }
 
     // ------------------- //
     // Attacking behaviour //
@@ -127,7 +165,7 @@ public class PlayerMotor : MonoBehaviour
         AudioSource.pitch = 1;
         AudioSource.PlayOneShot(hitSound);
 
-        GameObject GO = Instantiate(hitEffect, pos, Quanternion.identity);
+        GameObject GO = Instantiate(hitEffect, pos, Quaternion.identity);
         Destroy(GO, 20);
     }
 }   

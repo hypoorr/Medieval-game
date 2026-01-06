@@ -1017,6 +1017,18 @@ MonoBehaviour:
   speed: 5
   gravity: -9.8
   jumpHeight: 1.5
+  cam: {fileID: 330585545}
+  sensitivity: 0
+  attackDistance: 3
+  attackDelay: 0.4
+  attackSpeed: 1
+  attackDamage: 1
+  attackLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  hitEffect: {fileID: 0}
+  swordSwing: {fileID: 0}
+  hitSound: {fileID: 0}
 --- !u!114 &2092006082
 MonoBehaviour:
   m_ObjectHideFlags: 0
