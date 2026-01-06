@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMotor : MonoBehaviour
 {
@@ -9,6 +10,32 @@ public class PlayerMotor : MonoBehaviour
     private bool isGrounded;
     public float gravity = -9.8f;
     public float jumpHeight = 1.5f;
+    PlayerInput playerInput;
+    PlayerInput.MainActions input;
+    Animator animator;
+    AudioSource AudioSource;
+
+
+
+    void AssignInputs()
+    {
+        input.Jump.performed += ctx => Jump();
+        input.Attack.started += ctx => Attack();
+    }
+    void Awake()
+    {
+        controller = GetComponent<CharacterController>();
+        animator = GetComponentInChildren<Animator>();
+        AudioSource = GetComponent<AudioSource>();
+
+        playerInput = new PlayerInput();
+        input = playerInput.Main;
+        AssignInputs();
+
+        Cursor.lockstate = CursorLockMode.Locked;
+        Cursor.visible = false;
+        
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,6 +46,11 @@ public class PlayerMotor : MonoBehaviour
     void Update()
     {
         isGrounded = controller.isGrounded;
+
+        if(input.Attack.IsPressed())
+        { Attack(); }
+
+        SetAnimations();
     }
     public void ProcessMove(Vector2 input)
     {
@@ -40,4 +72,63 @@ public class PlayerMotor : MonoBehaviour
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
         }
     }
-}
+
+
+    // ------------------- //
+    // Attacking behaviour //
+    // ------------------- //
+
+    [Header("Attacking")]
+    public float attackDistance = 3f;
+    public float attackDelay = 0.4f;
+    public float attackSpeed = 1f;
+    public int attackDamage = 1;
+    public LayerMask attackLayer;
+
+    public GameObject hitEffect;
+    public AudioClip swordSwing;
+    public AudioClip hitSound;
+
+    bool attacking = false;
+    bool readyToAttack = true;
+    int attackCount;
+
+    public void Attack()
+    {
+        if (!readyToAttack || attacking) return;
+
+        readyToAttack = false;
+        attacking = true;
+
+        Invoke(nameof(ResetAttack), attackSpeed);
+        Invoke(nameof(AttackRaycast), attackDelay);
+
+        AudioSource.pitch = Random.Range(0.9f, 1.1f);
+        AudioSource.PlayOneShot(swordSwing);
+    }
+
+    void ResetAttack()
+    {
+        attacking = false;
+        readyToAttack = true;
+    }
+
+
+    void AttackRaycast()
+    {
+        if(Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hit, attackDistance, attackLayer))
+        {
+            HitTarget(hit.point);
+        }
+    }
+
+    void HitTarget(Vector3 pos)
+    {
+        AudioSource.pitch = 1;
+        AudioSource.PlayOneShot(hitSound);
+
+        GameObject GO = Instantiate(hitEffect, pos, Quanternion.identity);
+        Destroy(GO, 20);
+    }
+}   
+
