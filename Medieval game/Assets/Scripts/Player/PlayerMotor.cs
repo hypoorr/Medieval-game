@@ -14,13 +14,14 @@ public class PlayerMotor : MonoBehaviour
     PlayerInput playerInput;
     PlayerInput.OnFootActions input;
     Animator animator;
-    AudioSource AudioSource;
-
+    AudioSource audioSource;
+    
 
 
     [Header("Camera")]
     public Camera cam;
     public float sensitivity;
+    float xRotation = 0f;
 
 
     void AssignInputs()
@@ -32,7 +33,7 @@ public class PlayerMotor : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
-        AudioSource = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
 
         playerInput = new PlayerInput();
         input = playerInput.OnFoot;
@@ -42,11 +43,59 @@ public class PlayerMotor : MonoBehaviour
         Cursor.visible = false;
         
     }
+
+    void MoveInput(Vector2 input)
+    {
+        Vector3 moveDirection = Vector3.zero;
+        moveDirection.x = input.x;
+        moveDirection.z = input.y;
+
+        controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
+        playerVelocity.y += gravity * Time.deltaTime;
+        if(isGrounded && playerVelocity.y < 0)
+            playerVelocity.y = -2f;
+        controller.Move(playerVelocity * Time.deltaTime);
+    }
+
+    // void LookInput(Vector3 input)
+    // {
+    //     float mouseX = input.x;
+    //     float mouseY = input.y;
+
+    //     xRotation -= (mouseY * Time.deltaTime * sensitivity);
+    //     xRotation = Mathf.Clamp(xRotation, -80, 80);
+
+    //     cam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+
+    //     transform.Rotate(Vector3.up * (mouseX * Time.deltaTime * sensitivity));
+    // }
+
+    
+    void OnEnable()
+    { input.Enable();  }
+
+    void OnDisable()
+    { input.Disable(); }
+
+
+    public void Jump()
+    {
+        // Adds force to the player rigidbody to jump
+        if (isGrounded)
+            playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         controller = GetComponent<CharacterController>();
     }
+
+    void FixedUpdate()
+    { MoveInput(input.Movement.ReadValue<Vector2>()); }
+
+    // void LateUpdate()
+    // { LookInput(input.Look.ReadValue<Vector2>()); }
 
     // Update is called once per frame
     void Update()
@@ -57,26 +106,6 @@ public class PlayerMotor : MonoBehaviour
         { Attack(); }
 
         SetAnimations();
-    }
-    public void ProcessMove(Vector2 input)
-    {
-        Vector3 moveDirection = Vector3.zero;
-        moveDirection.x = input.x;
-        moveDirection.z = input.y;
-        controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
-        playerVelocity.y += gravity * Time.deltaTime;
-        if (isGrounded && playerVelocity.y < 0)
-        {
-            playerVelocity.y = -2f;
-        }
-        controller.Move(playerVelocity * Time.deltaTime);
-    }
-    public void Jump()
-    {
-        if (isGrounded)
-        {
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
-        }
     }
 
     // ---------- //
@@ -141,8 +170,19 @@ public class PlayerMotor : MonoBehaviour
         Invoke(nameof(ResetAttack), attackSpeed);
         Invoke(nameof(AttackRaycast), attackDelay);
 
-        AudioSource.pitch = Random.Range(0.9f, 1.1f);
-        AudioSource.PlayOneShot(swordSwing);
+        //AudioSource.pitch = Random.Range(0.9f, 1.1f);
+        //AudioSource.PlayOneShot(swordSwing);
+
+
+        if (attackCount == 0)
+        {
+            ChangeAnimationState(ATTACK1);
+            attackCount++;
+        }
+        else{
+            ChangeAnimationState(ATTACK2);
+            attackCount = 0;
+        }
     }
 
     void ResetAttack()
@@ -162,8 +202,8 @@ public class PlayerMotor : MonoBehaviour
 
     void HitTarget(Vector3 pos)
     {
-        AudioSource.pitch = 1;
-        AudioSource.PlayOneShot(hitSound);
+        //AudioSource.pitch = 1;
+        //AudioSource.PlayOneShot(hitSound);
 
         GameObject GO = Instantiate(hitEffect, pos, Quaternion.identity);
         Destroy(GO, 20);
