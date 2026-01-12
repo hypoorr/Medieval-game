@@ -11,8 +11,8 @@ TagManager:
   - Hittable
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Obstruction
   - 
   - 
   - 
