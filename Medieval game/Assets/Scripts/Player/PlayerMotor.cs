@@ -5,8 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMotor : MonoBehaviour
 {
-<<<<<<< Updated upstream
-=======
+
 
     private CharacterController controller;
     private Vector3 playerVelocity;
@@ -15,7 +14,7 @@ public class PlayerMotor : MonoBehaviour
     public float gravity = -9.8f;
     public float jumpHeight = 1.5f;
     public bool isMoving = false;
->>>>>>> Stashed changes
+
     PlayerInput playerInput;
     PlayerInput.OnFootActions input;
 
@@ -76,20 +75,11 @@ public class PlayerMotor : MonoBehaviour
         moveDirection.z = input.y;
         isMoving = true;
 
-<<<<<<< Updated upstream
         controller.Move(transform.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime);
         _PlayerVelocity.y += gravity * Time.deltaTime;
         if (isGrounded && _PlayerVelocity.y < 0)
             _PlayerVelocity.y = -2f;
         controller.Move(_PlayerVelocity * Time.deltaTime);
-=======
-        controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
-        playerVelocity.y += gravity * Time.deltaTime;
-        if(isGrounded && playerVelocity.y < 0)
-            playerVelocity.y = -2f;
-        controller.Move(playerVelocity * Time.deltaTime);
-        isMoving = false;
->>>>>>> Stashed changes
     }
 
     void LookInput(Vector3 input) // turns camera 
