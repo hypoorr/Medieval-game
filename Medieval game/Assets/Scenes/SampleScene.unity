@@ -1113,7 +1113,7 @@ MonoBehaviour:
   gravity: -9.8
   jumpHeight: 1.5
   cam: {fileID: 330585545}
-  sensitivity: 50
+  sensitivity: 30
   attackDistance: 3
   attackDelay: 0.4
   attackSpeed: 1

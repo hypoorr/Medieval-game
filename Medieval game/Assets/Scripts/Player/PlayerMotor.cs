@@ -7,13 +7,7 @@ public class PlayerMotor : MonoBehaviour
 {
 
 
-    private CharacterController controller;
-    private Vector3 playerVelocity;
-    public float speed = 5f;
     private bool isGrounded;
-    public float gravity = -9.8f;
-    public float jumpHeight = 1.5f;
-    public bool isMoving = false;
 
     PlayerInput playerInput;
     PlayerInput.OnFootActions input;
@@ -29,7 +23,6 @@ public class PlayerMotor : MonoBehaviour
 
     Vector3 _PlayerVelocity;
 
-    bool isGrounded;
 
     [Header("Camera")] // camera movement variables
     public Camera cam;
@@ -73,7 +66,7 @@ public class PlayerMotor : MonoBehaviour
         Vector3 moveDirection = Vector3.zero;
         moveDirection.x = input.x;
         moveDirection.z = input.y;
-        isMoving = true;
+    
 
         controller.Move(transform.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime);
         _PlayerVelocity.y += gravity * Time.deltaTime;
