@@ -148,7 +148,7 @@ public class PlayerMotor : MonoBehaviour
     public float attackDistance = 3f;
     public float attackDelay = 0.4f;
     public float attackSpeed = 1f;
-    public int attackDamage = 1;
+    public int attackDamage = 25;
     public LayerMask attackLayer;
 
     public GameObject hitEffect;
@@ -195,6 +195,9 @@ public class PlayerMotor : MonoBehaviour
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hit, attackDistance, attackLayer))
         {
             HitTarget(hit.point);
+
+            if(hit.transform.TryGetComponent<Actor>(out Actor T))
+            { T.TakeDamage(attackDamage);}
         }
     }
 
