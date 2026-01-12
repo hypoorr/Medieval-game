@@ -1,35 +1,33 @@
-using UnityEngine;
-using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
 public class PlayerMotor : MonoBehaviour
 {
-
-    private CharacterController controller;
-    private Vector3 playerVelocity;
-    public float speed = 5f;
-    private bool isGrounded;
-    public float gravity = -9.8f;
-    public float jumpHeight = 1.5f;
     PlayerInput playerInput;
     PlayerInput.OnFootActions input;
+
+    CharacterController controller;
     Animator animator;
     AudioSource audioSource;
-    
 
+    [Header("Controller")] // variables for player movement
+    public float moveSpeed = 5;
+    public float gravity = -9.8f;
+    public float jumpHeight = 1.2f;
 
-    [Header("Camera")]
+    Vector3 _PlayerVelocity;
+
+    bool isGrounded;
+
+    [Header("Camera")] // camera movement variables
     public Camera cam;
     public float sensitivity;
+
     float xRotation = 0f;
 
-
-    void AssignInputs()
-    {
-        input.Jump.performed += ctx => Jump();
-        input.Attack.started += ctx => Attack();
-    }
-    void Awake()
+    void Awake() // assign variables to components and locks cursor
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
@@ -41,71 +39,68 @@ public class PlayerMotor : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        
     }
 
-    void MoveInput(Vector2 input)
+    void Update() // constantly checking if the player is on the ground and checking if the player is attacking
+    {
+        isGrounded = controller.isGrounded;
+
+        // Repeat Inputs
+        if (input.Attack.IsPressed())
+        { Attack(); }
+
+        SetAnimations();
+    }
+
+    void FixedUpdate() // checks for movement buttons being pressed
+    { MoveInput(input.Movement.ReadValue<Vector2>()); }
+
+    void LateUpdate() // checks if the user is moving mouse
+    { LookInput(input.Look.ReadValue<Vector2>()); }
+
+    void MoveInput(Vector2 input) // moves player
     {
         Vector3 moveDirection = Vector3.zero;
         moveDirection.x = input.x;
         moveDirection.z = input.y;
 
-        controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
-        playerVelocity.y += gravity * Time.deltaTime;
-        if(isGrounded && playerVelocity.y < 0)
-            playerVelocity.y = -2f;
-        controller.Move(playerVelocity * Time.deltaTime);
+        controller.Move(transform.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime);
+        _PlayerVelocity.y += gravity * Time.deltaTime;
+        if (isGrounded && _PlayerVelocity.y < 0)
+            _PlayerVelocity.y = -2f;
+        controller.Move(_PlayerVelocity * Time.deltaTime);
     }
 
-    // void LookInput(Vector3 input)
-    // {
-    //     float mouseX = input.x;
-    //     float mouseY = input.y;
+    void LookInput(Vector3 input) // turns camera 
+    {
+        float mouseX = input.x;
+        float mouseY = input.y;
 
-    //     xRotation -= (mouseY * Time.deltaTime * sensitivity);
-    //     xRotation = Mathf.Clamp(xRotation, -80, 80);
+        xRotation -= (mouseY * Time.deltaTime * sensitivity);
+        xRotation = Mathf.Clamp(xRotation, -80, 80);
 
-    //     cam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+        cam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
 
-    //     transform.Rotate(Vector3.up * (mouseX * Time.deltaTime * sensitivity));
-    // }
+        transform.Rotate(Vector3.up * (mouseX * Time.deltaTime * sensitivity));
+    }
 
-    
-    void OnEnable()
-    { input.Enable();  }
+    void OnEnable() // enables input
+    { input.Enable(); }
 
-    void OnDisable()
+    void OnDisable() // disables input
     { input.Disable(); }
 
-
-    public void Jump()
+    void Jump() // logic for when the player jumps
     {
         // Adds force to the player rigidbody to jump
         if (isGrounded)
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
+            _PlayerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void AssignInputs() // calls jump or attack when the input happens
     {
-        controller = GetComponent<CharacterController>();
-    }
-
-    void FixedUpdate()
-    { MoveInput(input.Movement.ReadValue<Vector2>()); }
-
-    // void LateUpdate()
-    // { LookInput(input.Look.ReadValue<Vector2>()); }
-
-    // Update is called once per frame
-    void Update()
-    {
-        isGrounded = controller.isGrounded;
-
-        if(input.Attack.IsPressed())
-        { Attack(); }
-
-        SetAnimations();
+        input.Jump.performed += ctx => Jump();
+        input.Attack.started += ctx => Attack();
     }
 
     // ---------- //
@@ -119,7 +114,7 @@ public class PlayerMotor : MonoBehaviour
 
     string currentAnimationState;
 
-    public void ChangeAnimationState(string newState) 
+    public void ChangeAnimationState(string newState) // starts the animation corresponding to the current action
     {
         // STOP THE SAME ANIMATION FROM INTERRUPTING WITH ITSELF //
         if (currentAnimationState == newState) return;
@@ -129,12 +124,12 @@ public class PlayerMotor : MonoBehaviour
         animator.CrossFadeInFixedTime(currentAnimationState, 0.2f);
     }
 
-    void SetAnimations()
+    void SetAnimations() // checks if the player is idle or walking
     {
         // If player is not attacking
-        if(!attacking)
+        if (!attacking)
         {
-            if(playerVelocity.x == 0 &&playerVelocity.z == 0)
+            if (_PlayerVelocity.x == 0 && _PlayerVelocity.z == 0)
             { ChangeAnimationState(IDLE); }
             else
             { ChangeAnimationState(WALK); }
@@ -142,7 +137,7 @@ public class PlayerMotor : MonoBehaviour
     }
 
     // ------------------- //
-    // Attacking behaviour //
+    // ATTACKING BEHAVIOUR //
     // ------------------- //
 
     [Header("Attacking")]
@@ -160,7 +155,7 @@ public class PlayerMotor : MonoBehaviour
     bool readyToAttack = true;
     int attackCount;
 
-    public void Attack()
+    public void Attack() // when player clicks, sword swings and animations play
     {
         if (!readyToAttack || attacking) return;
 
@@ -170,43 +165,41 @@ public class PlayerMotor : MonoBehaviour
         Invoke(nameof(ResetAttack), attackSpeed);
         Invoke(nameof(AttackRaycast), attackDelay);
 
-        //AudioSource.pitch = Random.Range(0.9f, 1.1f);
-        //AudioSource.PlayOneShot(swordSwing);
-
+        audioSource.pitch = Random.Range(0.9f, 1.1f);
+        audioSource.PlayOneShot(swordSwing);
 
         if (attackCount == 0)
         {
             ChangeAnimationState(ATTACK1);
             attackCount++;
         }
-        else{
+        else
+        {
             ChangeAnimationState(ATTACK2);
             attackCount = 0;
         }
     }
 
-    void ResetAttack()
+    void ResetAttack() // resets attack
     {
         attacking = false;
         readyToAttack = true;
     }
 
-
-    void AttackRaycast()
+    void AttackRaycast() // checks if what the player is swinging at contains "hittable"
     {
-        if(Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hit, attackDistance, attackLayer))
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hit, attackDistance, attackLayer))
         {
             HitTarget(hit.point);
         }
     }
 
-    void HitTarget(Vector3 pos)
+    void HitTarget(Vector3 pos) // creates hit mark on object
     {
-        //AudioSource.pitch = 1;
-        //AudioSource.PlayOneShot(hitSound);
+        audioSource.pitch = 1;
+        audioSource.PlayOneShot(hitSound);
 
         GameObject GO = Instantiate(hitEffect, pos, Quaternion.identity);
         Destroy(GO, 20);
     }
-}   
-
+}
