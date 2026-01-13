@@ -215,6 +215,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  prefab: {fileID: 0}
+  parentTransform: {fileID: 0}
+  spawnPosition: {x: 0, y: 4, z: 0}
+  spawnRotation: {x: 0, y: 0, z: 0}
 --- !u!136 &31608678
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1383,6 +1387,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  prefab: {fileID: 30743418663127257, guid: 03bf46f0270448146845f11ffe793629, type: 3}
+  parentTransform: {fileID: 1752453348}
+  spawnPosition: {x: 0, y: 4, z: 0}
+  spawnRotation: {x: 0, y: 0, z: 0}
 --- !u!4 &1752453348 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0d599da7e8360e6498a5f9c9f60745c7, type: 3}
@@ -1401,7 +1409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 8
-  angle: 115
+  angle: 141
   playerRef: {fileID: 2092006077}
   moveSpeed: 3
   turnSpeed: 5
@@ -1742,7 +1750,7 @@ MonoBehaviour:
   gravity: -9.8
   jumpHeight: 1.5
   cam: {fileID: 330585545}
-  sensitivity: 30
+  sensitivity: 15
   attackDistance: 3
   attackDelay: 0.4
   attackSpeed: 1
