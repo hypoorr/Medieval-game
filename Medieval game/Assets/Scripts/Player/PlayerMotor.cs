@@ -21,7 +21,7 @@ public class PlayerMotor : MonoBehaviour
     public float gravity = -9.8f;
     public float jumpHeight = 1.2f;
     [SerializeField] private int maxHealth = 100;
-    [SerializeField] private int currentHealth;
+    public int currentHealth;
     Vector3 _PlayerVelocity;
 
     public bool isAttacked = false;
@@ -40,7 +40,6 @@ public class PlayerMotor : MonoBehaviour
             if (!isAttacked)
             {
                 isAttacked = true;
-                Debug.Log(collision.transform.root);
                 // find the attack damage of the enemy hitting the player
                 FieldOfView AIVision = collision.transform.root.GetComponent<FieldOfView>();
                 currentHealth -= AIVision.attackDamage;

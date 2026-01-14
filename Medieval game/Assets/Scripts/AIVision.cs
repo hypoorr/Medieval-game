@@ -173,7 +173,7 @@ public class FieldOfView : MonoBehaviour
     public float attackDistance = 3f;
     public float attackDelay = 0.4f;
     public float attackSpeed = 1f;
-    public int attackDamage = 25;
+    public int attackDamage = 7;
 
     //public GameObject hitEffect;
     //public AudioClip swordSwing;
