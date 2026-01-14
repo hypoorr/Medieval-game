@@ -10,6 +10,9 @@ public class Actor : MonoBehaviour
     TextMeshProUGUI healthText;
     public Vector3 spawnPosition = new Vector3(0, 4f, 0);
     public Vector3 spawnRotation = new Vector3(0, 180f, 0);
+    float r;
+    float b;
+    float g;
     void Awake()
     {
         currentHealth = maxHealth;
@@ -32,9 +35,32 @@ public class Actor : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void FixedUpdate()
+    void LateUpdate()
     {
+        UpdateTextColour();
         //healthText.text = currentHealth.ToString() + "hp";
+    }
+
+    void UpdateTextColour()
+    {
+        r = 255f - (2.55f * currentHealth); // as health gets lower, increase RED value
+        g = 2.55f * currentHealth; // as health gets lower, decrease GREEN value
+
+        r = Mathf.Clamp(r, 0, 255) / 255f;
+        g = Mathf.Clamp(g, 0, 255) / 255f;
+        b = 0;
+
+        Color newColor = new Color(r, g, b);
+        if (healthText)
+        {
+            healthText.color = newColor;
+        }
+        else
+        {
+            
+        }
+        
+
     }
     void Start()
     {

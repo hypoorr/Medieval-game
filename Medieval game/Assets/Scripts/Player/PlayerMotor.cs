@@ -20,15 +20,35 @@ public class PlayerMotor : MonoBehaviour
     public float moveSpeed = 5;
     public float gravity = -9.8f;
     public float jumpHeight = 1.2f;
-
+    [SerializeField] private int maxHealth = 100;
+    [SerializeField] private int currentHealth;
     Vector3 _PlayerVelocity;
 
+    public bool isAttacked = false;
 
     [Header("Camera")] // camera movement variables
     public Camera cam;
     public float sensitivity;
 
     float xRotation = 0f;
+
+    //private FieldOfView AIVision;
+    void OnTriggerEnter(Collider collision)
+    {
+        if (collision.CompareTag("Weapon"))
+        {
+            if (!isAttacked)
+            {
+                isAttacked = true;
+                Debug.Log(collision.transform.root);
+                // find the attack damage of the enemy hitting the player
+                FieldOfView AIVision = collision.transform.root.GetComponent<FieldOfView>();
+                currentHealth -= AIVision.attackDamage;
+                Debug.Log(currentHealth);
+            }
+
+        }
+    }
 
     void Awake() // assign variables to components and locks cursor
     {
@@ -42,6 +62,8 @@ public class PlayerMotor : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        currentHealth = maxHealth;
     }
 
     void Update() // constantly checking if the player is on the ground and checking if the player is attacking

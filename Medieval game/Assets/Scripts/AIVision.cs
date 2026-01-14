@@ -25,9 +25,14 @@ public class FieldOfView : MonoBehaviour
 
     public UnityEvent OnPlayerCatch;
 
+    Animator animator;
+
+    public PlayerMotor playerMotor;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponentInChildren<Animator>();
         playerRef = GameObject.FindGameObjectWithTag("Player");
 
         StartCoroutine(FOVRoutine());
@@ -46,6 +51,43 @@ public class FieldOfView : MonoBehaviour
                 OnPlayerCatch.Invoke();
             }
 
+        }
+    }
+    
+    public Transform target;
+
+    
+    public float detectionRadius = 5f;
+
+    
+    public bool useSquaredDistance = true;
+
+    void Update()
+    {
+        if (target == null)
+        {
+            Debug.LogWarning("Target not assigned");
+            return;
+        }
+
+        bool isNear = false;
+
+        if (useSquaredDistance)
+        {
+            float sqrDistance = (target.position - transform.position).sqrMagnitude;
+            float sqrRadius = detectionRadius * detectionRadius;
+            isNear = sqrDistance <= sqrRadius;
+        }
+        else
+        {
+            float distance = Vector3.Distance(transform.position, target.position);
+            isNear = distance <= detectionRadius;
+        }
+
+        if (isNear)
+        {
+            //Debug.Log($"{name} is within {detectionRadius} units of {target.name}");
+            Attack();
         }
     }
 
@@ -103,4 +145,80 @@ public class FieldOfView : MonoBehaviour
         else if (canSeePlayer)
             canSeePlayer = false;
     }
+
+
+    // ---------- //
+    // ANIMATIONS //
+    // ---------- //
+
+    public const string IDLE = "Idle";
+    public const string WALK = "Walk";
+    public const string ATTACK1 = "Attack 1";
+    public const string ATTACK2 = "Attack 2";
+
+    string currentAnimationState;
+
+    public void ChangeAnimationState(string newState) // starts the animation corresponding to the current action
+    {
+        // STOP THE SAME ANIMATION FROM INTERRUPTING WITH ITSELF //
+        if (currentAnimationState == newState) return;
+
+        // PLAY THE ANIMATION //
+        currentAnimationState = newState;
+        animator.CrossFadeInFixedTime(currentAnimationState, 0.2f);
+    }
+
+
+    [Header("Attacking")]
+    public float attackDistance = 3f;
+    public float attackDelay = 0.4f;
+    public float attackSpeed = 1f;
+    public int attackDamage = 25;
+
+    //public GameObject hitEffect;
+    //public AudioClip swordSwing;
+    //public AudioClip hitSound;
+
+    bool attacking = false;
+    bool readyToAttack = true;
+    int attackCount;
+
+    public void Attack() // when player clicks, sword swings and animations play
+    {
+        if (!readyToAttack || attacking) return;
+
+        readyToAttack = false;
+        attacking = true;
+
+        Invoke(nameof(ResetAttack), attackSpeed);
+        //Invoke(nameof(AttackRaycast), attackDelay);
+
+        //audioSource.PlayOneShot(swordSwing);
+
+        if (attackCount == 0)
+        {
+            ChangeAnimationState(ATTACK1);
+            
+            attackCount++;
+        }
+        else
+        {
+            ChangeAnimationState(ATTACK2);
+            
+            attackCount = 0;
+        }
+
+
+    }
+
+    
+
+    void ResetAttack() // resets attack
+    {
+        attacking = false;
+        readyToAttack = true;
+        playerMotor.isAttacked = false;
+    }
+
+
 }
