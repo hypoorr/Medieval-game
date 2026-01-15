@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.AI;
 
 public class FieldOfView : MonoBehaviour
 {
@@ -28,6 +29,8 @@ public class FieldOfView : MonoBehaviour
     Animator animator;
 
     public PlayerMotor playerMotor;
+
+    public NavMeshAgent agent;
 
     private void Start()
     {
@@ -89,26 +92,27 @@ public class FieldOfView : MonoBehaviour
             //Debug.Log($"{name} is within {detectionRadius} units of {target.name}");
             Attack();
         }
-    }
-
-    private void FixedUpdate()
-    {
+        SetAnimations();
         if (canSeePlayer)
         {
 
-            Vector3 dir = playerRef.transform.position - transform.position;
-            dir.y = 0;
-            dir.Normalize();
+            // Vector3 dir = playerRef.transform.position - transform.position;
+            // dir.y = 0;
+            // dir.Normalize();
 
 
-            Quaternion targetRot = Quaternion.LookRotation(dir);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, turnSpeed * Time.fixedDeltaTime));
+            // Quaternion targetRot = Quaternion.LookRotation(dir);
+            // rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, turnSpeed * Time.fixedDeltaTime));
 
 
-            Vector3 move = dir * moveSpeed * Time.fixedDeltaTime;
-            rb.MovePosition(rb.position + move);
+            // Vector3 move = dir * moveSpeed * Time.fixedDeltaTime;
+            // rb.MovePosition(rb.position + move);
+
+            Vector3 playerPos = playerRef.transform.position;
+            agent.SetDestination(playerPos);
         }
     }
+
 
     private IEnumerator FOVRoutine()
     {
@@ -166,6 +170,17 @@ public class FieldOfView : MonoBehaviour
         // PLAY THE ANIMATION //
         currentAnimationState = newState;
         animator.CrossFadeInFixedTime(currentAnimationState, 0.2f);
+    }
+    void SetAnimations() // checks if the player is idle or walking
+    {
+        // If ai is not attacking
+        if (!attacking)
+        {
+            if (!canSeePlayer)
+            { ChangeAnimationState(IDLE); }
+            else
+            { ChangeAnimationState(WALK); }
+        }
     }
 
 
