@@ -31,6 +31,7 @@ public class LevelSetup : MonoBehaviour
             gameObject.transform.position = point;
             GameObject enemy = Instantiate(enemyPrefab, gameObject.transform);
             enemy.transform.SetParent(null, true);
+            enemy.GetComponent<Actor>().enabled = true;
         }
 
         

@@ -1610,7 +1610,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1871229182}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70b7622d3c1c39240b98f60865811448, type: 3}
   m_Name: 
@@ -7865,7 +7865,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1871229182}
   targetObject: {fileID: 2085360533}
-  enemyCount: 100
+  enemyCount: 1000
 --- !u!1001 &1695402342
 PrefabInstance:
   m_ObjectHideFlags: 0
