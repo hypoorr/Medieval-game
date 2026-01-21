@@ -30,6 +30,7 @@ public class FieldOfView : MonoBehaviour
 
     public PlayerMotor playerMotor;
 
+
     public NavMeshAgent agent;
 
     private void Start()
@@ -111,6 +112,7 @@ public class FieldOfView : MonoBehaviour
             Vector3 playerPos = playerRef.transform.position;
             agent.SetDestination(playerPos);
         }
+        
     }
 
 

@@ -7,6 +7,18 @@ public class LevelSetup : MonoBehaviour
     [Header("Level settings")]
     [SerializeField]
     private int enemyCount;
+    private bool hasWin;
+    private bool hasLose;
+    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject winScreen;
+    [SerializeField] private GameObject loseScreen;
+
+    private int currentEnemyCount;
+
+    [SerializeField] private PlayerMotor playerMotor;
+
+
+
 
 
 
@@ -15,14 +27,20 @@ public class LevelSetup : MonoBehaviour
 
 
     
+    void Awake()
+    {
+        currentEnemyCount = enemyCount;
+    }
 
     void Start()
     {
+        hasWin = false;
 
         // Get cube bounds
         Renderer rend = targetObject.GetComponent<Renderer>();
 
         Bounds bounds = rend.bounds;
+
 
         for(int i = 0; i < enemyCount; i++)
         {
@@ -35,6 +53,41 @@ public class LevelSetup : MonoBehaviour
             enemy.GetComponent<Actor>().enabled = true;
         }
 
-        
+    }
+
+    public void UpdateEnemyCount()
+    {
+        currentEnemyCount -= 1;
+        Debug.Log(currentEnemyCount);
+    }
+
+    void FixedUpdate()
+    {
+        if(currentEnemyCount == 0)
+        {
+            if (!hasWin)
+            {
+                hasWin = true;
+                Debug.Log("win");
+                player.SetActive(false);
+                winScreen.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+
+        }
+
+        if(playerMotor.currentHealth <= 0)
+        {
+            if (!hasLose)
+            {
+                hasLose = true;
+                player.SetActive(false);
+                loseScreen.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+
+            }
+        }
     }
 }

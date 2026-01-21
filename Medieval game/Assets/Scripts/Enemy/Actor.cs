@@ -7,7 +7,11 @@ public class Actor : MonoBehaviour
     public GameObject prefab;
 
     public Transform parentTransform = null;
+    
+    public LevelSetup levelSetup;
+
     TextMeshProUGUI healthText;
+
     public Vector3 spawnPosition = new Vector3(0, 4f, 0);
     public Vector3 spawnRotation = new Vector3(0, 180f, 0);
     float r;
@@ -32,6 +36,7 @@ public class Actor : MonoBehaviour
     {
         //Death function
         // temporary, destroy enemy
+        levelSetup.UpdateEnemyCount();
         Destroy(gameObject);
     }
 
