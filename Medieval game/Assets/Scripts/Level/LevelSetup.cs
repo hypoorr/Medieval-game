@@ -16,7 +16,7 @@ public class LevelSetup : MonoBehaviour
     private int currentEnemyCount;
 
     [SerializeField] private PlayerMotor playerMotor;
-
+    [SerializeField] private PlayerDeathEventSO playerDeathEvent;
 
 
 
@@ -26,7 +26,7 @@ public class LevelSetup : MonoBehaviour
     //Setup enemy spawns
 
 
-    
+
     void Awake()
     {
         currentEnemyCount = enemyCount;
@@ -42,7 +42,7 @@ public class LevelSetup : MonoBehaviour
         Bounds bounds = rend.bounds;
 
 
-        for(int i = 0; i < enemyCount; i++)
+        for (int i = 0; i < enemyCount; i++)
         {
             Vector3 point = Vector3.zero;
             point = new Vector3(Random.Range(bounds.min.x, bounds.max.x), bounds.max.y, Random.Range(bounds.min.z, bounds.max.z));
@@ -63,7 +63,7 @@ public class LevelSetup : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(currentEnemyCount == 0)
+        if (currentEnemyCount == 0)
         {
             if (!hasWin)
             {
@@ -77,15 +77,12 @@ public class LevelSetup : MonoBehaviour
 
         }
 
-        if(playerMotor.currentHealth <= 0)
+        if (playerMotor.currentHealth <= 0)
         {
             if (!hasLose)
             {
-                hasLose = true;
-                player.SetActive(false);
-                loseScreen.SetActive(true);
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+
+                playerDeathEvent.Raise();
 
             }
         }
