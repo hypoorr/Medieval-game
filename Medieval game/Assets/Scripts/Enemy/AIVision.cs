@@ -37,7 +37,7 @@ public class FieldOfView : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
-        playerRef = GameObject.FindGameObjectWithTag("Player");
+        //playerRef = GameObject.FindGameObjectWithTag("Player");
 
         StartCoroutine(FOVRoutine());
 
