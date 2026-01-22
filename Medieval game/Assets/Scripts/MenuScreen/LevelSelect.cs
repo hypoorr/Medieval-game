@@ -14,7 +14,6 @@ public class LevelSelect : MonoBehaviour
     }
     public void Level3()
     {
-        Debug.Log("no level 3 yet :(");
-        //SceneManager.LoadScene("Level2");
+        SceneManager.LoadScene("Level3");
     }
 }
