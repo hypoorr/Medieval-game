@@ -10735,7 +10735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1871229182}
   targetObject: {fileID: 2085360533}
-  enemyCount: 25
+  enemyCount: 20
   player: {fileID: 788011593}
   winScreen: {fileID: 1369126062}
   loseScreen: {fileID: 70731376}
