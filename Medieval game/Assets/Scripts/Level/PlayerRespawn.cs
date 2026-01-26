@@ -6,11 +6,13 @@ public class PlayerRespawn : MonoBehaviour
     [SerializeField] private PlayerDeathEventSO playerDeathEvent;
     private bool hasLose;
     [SerializeField] private GameObject loseScreen;
+    [SerializeField] private GameObject player;
 
 
     void Start()
     {
         hasLose = false;
+        player = GameObject.FindWithTag("Player");
     }
 
     private void OnEnable()
@@ -26,7 +28,7 @@ public class PlayerRespawn : MonoBehaviour
     private void Death()
     {
         hasLose = true;
-        //player.SetActive(false);
+        player.SetActive(false);
         loseScreen.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
