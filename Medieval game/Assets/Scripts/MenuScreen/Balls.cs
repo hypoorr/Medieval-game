@@ -8,7 +8,7 @@ public class Balls : MonoBehaviour
     void SpawnBall()
     {
         GameObject spawnedBall = Instantiate(ballRef, transform);
-        spawnedBall.transform.position = new Vector3(Random.Range(-30,30), 25, Random.Range(-30,30));
+        spawnedBall.transform.position = new Vector3(Random.Range(-30, 30), 25, Random.Range(-30, 30));
         spawnedBall.SetActive(true);
         StartCoroutine(DestroyBall(spawnedBall));
         StartCoroutine(CheckBall(spawnedBall));
@@ -21,7 +21,7 @@ public class Balls : MonoBehaviour
     }
     IEnumerator CheckBall(GameObject ball)
     {
-        while(ball)
+        while (ball)
         {
             if (ball.transform.position.y < -50) // despawn offscreen
             {

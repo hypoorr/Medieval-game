@@ -588,7 +588,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 16c0664b89c248e45900eff04c1a01d2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 66c3b240bbfcc4943b64898d14944412, type: 2}
+      objectReference: {fileID: 2100000, guid: 637599faf4b2a754e898f2663afccbe6, type: 2}
     - target: {fileID: 919132149155446097, guid: 16c0664b89c248e45900eff04c1a01d2, type: 3}
       propertyPath: m_Name
       value: grass (2)
@@ -1483,7 +1483,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 66c3b240bbfcc4943b64898d14944412, type: 2}
+  - {fileID: 2100000, guid: 637599faf4b2a754e898f2663afccbe6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3036,7 +3036,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 16c0664b89c248e45900eff04c1a01d2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 66c3b240bbfcc4943b64898d14944412, type: 2}
+      objectReference: {fileID: 2100000, guid: 637599faf4b2a754e898f2663afccbe6, type: 2}
     - target: {fileID: 919132149155446097, guid: 16c0664b89c248e45900eff04c1a01d2, type: 3}
       propertyPath: m_Name
       value: grass (5)
@@ -7583,7 +7583,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 16c0664b89c248e45900eff04c1a01d2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 66c3b240bbfcc4943b64898d14944412, type: 2}
+      objectReference: {fileID: 2100000, guid: 637599faf4b2a754e898f2663afccbe6, type: 2}
     - target: {fileID: 919132149155446097, guid: 16c0664b89c248e45900eff04c1a01d2, type: 3}
       propertyPath: m_Name
       value: grass (6)
@@ -8434,7 +8434,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 16c0664b89c248e45900eff04c1a01d2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 66c3b240bbfcc4943b64898d14944412, type: 2}
+      objectReference: {fileID: 2100000, guid: 637599faf4b2a754e898f2663afccbe6, type: 2}
     - target: {fileID: 919132149155446097, guid: 16c0664b89c248e45900eff04c1a01d2, type: 3}
       propertyPath: m_Name
       value: grass (4)
@@ -9172,7 +9172,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 16c0664b89c248e45900eff04c1a01d2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 66c3b240bbfcc4943b64898d14944412, type: 2}
+      objectReference: {fileID: 2100000, guid: 637599faf4b2a754e898f2663afccbe6, type: 2}
     - target: {fileID: 919132149155446097, guid: 16c0664b89c248e45900eff04c1a01d2, type: 3}
       propertyPath: m_Name
       value: grass (1)
@@ -10735,7 +10735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1871229182}
   targetObject: {fileID: 2085360533}
-  enemyCount: 20
+  enemyCount: 6
   player: {fileID: 788011593}
   winScreen: {fileID: 1369126062}
   loseScreen: {fileID: 70731376}
@@ -15706,7 +15706,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 16c0664b89c248e45900eff04c1a01d2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 66c3b240bbfcc4943b64898d14944412, type: 2}
+      objectReference: {fileID: 2100000, guid: 637599faf4b2a754e898f2663afccbe6, type: 2}
     - target: {fileID: 919132149155446097, guid: 16c0664b89c248e45900eff04c1a01d2, type: 3}
       propertyPath: m_Name
       value: grass (3)
