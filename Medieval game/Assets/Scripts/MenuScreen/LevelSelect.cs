@@ -10,10 +10,17 @@ public class LevelSelect : MonoBehaviour
 
     public void Level2()
     {
-        SceneManager.LoadScene("Level2");
+        if (UnlockLevels.unlockedMedium)
+        {
+            SceneManager.LoadScene("Level2");
+        }
+        
     }
     public void Level3()
     {
-        SceneManager.LoadScene("Level3");
+        if (UnlockLevels.unlockedHard)
+        {
+            SceneManager.LoadScene("Level3");
+        }
     }
 }

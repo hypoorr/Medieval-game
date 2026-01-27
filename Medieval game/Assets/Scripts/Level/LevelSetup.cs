@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public class LevelSetup : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
@@ -73,6 +74,17 @@ public class LevelSetup : MonoBehaviour
                 winScreen.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                
+                // unlock levels
+
+                if (SceneManager.GetActiveScene().name == "Level1")
+                {
+                    UnlockLevels.UnlockMedium();
+                }
+                else if (SceneManager.GetActiveScene().name == "Level2")
+                {
+                    UnlockLevels.UnlockHard();
+                }
             }
 
         }
