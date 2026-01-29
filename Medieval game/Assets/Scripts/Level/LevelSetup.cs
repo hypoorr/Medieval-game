@@ -85,6 +85,10 @@ public class LevelSetup : MonoBehaviour
                 {
                     UnlockLevels.UnlockHard();
                 }
+                else if (SceneManager.GetActiveScene().name == "Level3")
+                {
+                    UnlockLevels.UnlockBoss();
+                }
             }
 
         }

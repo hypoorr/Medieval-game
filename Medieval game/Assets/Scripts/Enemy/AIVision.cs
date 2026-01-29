@@ -97,18 +97,6 @@ public class FieldOfView : MonoBehaviour
         if (canSeePlayer)
         {
 
-            // Vector3 dir = playerRef.transform.position - transform.position;
-            // dir.y = 0;
-            // dir.Normalize();
-
-
-            // Quaternion targetRot = Quaternion.LookRotation(dir);
-            // rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, turnSpeed * Time.fixedDeltaTime));
-
-
-            // Vector3 move = dir * moveSpeed * Time.fixedDeltaTime;
-            // rb.MovePosition(rb.position + move);
-
             Vector3 playerPos = playerRef.transform.position;
             agent.SetDestination(playerPos);
         }
@@ -200,7 +188,7 @@ public class FieldOfView : MonoBehaviour
     bool readyToAttack = true;
     int attackCount;
 
-    public void Attack() // when player clicks, sword swings and animations play
+    public void Attack() // when enemy attacks, sword swings and animations play
     {
         if (!readyToAttack || attacking) return;
 

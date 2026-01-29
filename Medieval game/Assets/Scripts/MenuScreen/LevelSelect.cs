@@ -23,4 +23,11 @@ public class LevelSelect : MonoBehaviour
             SceneManager.LoadScene("Level3");
         }
     }
+    public void Level4()
+    {
+        if (UnlockLevels.unlockedBoss)
+        {
+            SceneManager.LoadScene("Level4");
+        }
+    }
 }

@@ -32,12 +32,12 @@ public class PlayerMotor : MonoBehaviour
 
     float xRotation = 0f;
 
-    //private FieldOfView AIVision;
+    // check if player has been hit by enemy
     void OnTriggerEnter(Collider collision)
     {
         if (collision.CompareTag("Weapon"))
         {
-            if (!isAttacked)
+            if (!isAttacked) // prevent multiple hits in 1 swing
             {
                 isAttacked = true;
                 // find the attack damage of the enemy hitting the player
@@ -216,7 +216,7 @@ public class PlayerMotor : MonoBehaviour
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hit, attackDistance, attackLayer))
         {
             HitTarget(hit.point);
-            if(hit.transform.root.TryGetComponent<Actor>(out Actor T))
+            if(hit.transform.root.TryGetComponent<Actor>(out Actor T)) // if the attacked object has actor script, deal damage
             { T.TakeDamage(attackDamage);}
         }
     }
