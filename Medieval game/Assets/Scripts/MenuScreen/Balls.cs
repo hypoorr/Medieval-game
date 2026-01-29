@@ -30,7 +30,7 @@ public class Balls : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
-    void FixedUpdate()
+    void Update()
     {
         SpawnBall();
     }
